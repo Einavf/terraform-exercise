@@ -7,11 +7,6 @@ resource "aws_instance" "example" {
   instance_type = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.instance.id}"]
 
-variable "server_port" {
-      description = "The port the server will use for HTTP requests"
-      default = 8080
-    }
-
   user_data = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
@@ -19,9 +14,15 @@ variable "server_port" {
               EOF
 
 tags {
-       Name = "terraform-example"
-       }
+  Name = "terraform-example"
+     }
 }
+
+variable "server_port" {
+      description = "The port the server will use for HTTP requests"
+      default = 8080
+    }
+
 resource "aws_security_group" "instance" {
   name = "terraform-example-instance"
   ingress {
